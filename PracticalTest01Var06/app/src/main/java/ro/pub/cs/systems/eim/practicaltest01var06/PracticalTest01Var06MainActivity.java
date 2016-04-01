@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import ro.pub.cs.systems.eim.practicaltest01var06.Constants;
 
 public class PracticalTest01Var06MainActivity extends Activity
 {
@@ -65,6 +68,7 @@ public class PracticalTest01Var06MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_practical_test01_var06_main);
         firstEdit= (EditText)findViewById(R.id.edit_text);
         secondEdit= (EditText)findViewById(R.id.web_address);
@@ -74,23 +78,29 @@ public class PracticalTest01Var06MainActivity extends Activity
         layout=(LinearLayout)findViewById(R.id.layout);
         secondButton= (Button)findViewById(R.id.new_button);
 
+        if (savedInstanceState !=null) {
+            if (savedInstanceState.containsKey("SAVE_STATE") && savedInstanceState.containsKey("SAVE_STATEB")) {
+                secondEdit.setText(savedInstanceState.getString("SAVE_STATE"));
+                secondButton.setText(savedInstanceState.getString("SAVE_STATEB"));
+                Toast.makeText(this, "Text: " + Constants.SAVE_STATE + " " + "TextButton: " + Constants.SAVE_STATE, Toast.LENGTH_LONG).show();
+            }
+        }
     }
+
 
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(SAVED_STATE, secondEdit.getText());
-        savedInstanceState.putString(SAVED_STATEB,secondButton.getText());
 
+        savedInstanceState.putString("SAVE_STATE", secondEdit.getText().toString());
+        savedInstanceState.putString("SAVE_STATEB", secondButton.getText().toString());
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        if(savedInstanceState !=null){
-            secondEdit.setText(savedInstanceState.SAVE_STATE);
-            secondEdit.setText(savedInstanceState.SAVE_STATEB);
+        if(savedInstanceState.containsKey("SAVE_STATE") && savedInstanceState.containsKey("SAVE_STATEB")){
+            secondEdit.setText(savedInstanceState.getString(savedInstanceState.getString("SAVE_STATE")));
+            secondButton.setText(savedInstanceState.getString(savedInstanceState.getString("SAVE_STATEB")));
 
         }
 
